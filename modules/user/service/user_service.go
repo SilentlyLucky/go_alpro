@@ -10,6 +10,7 @@ import (
 
 type UserService interface {
 	GetUserById(ctx context.Context, userId string) (dto.UserResponse, error)
+	GetAllUsers(ctx context.Context) ([]dto.UserResponse, error)
 	Update(ctx context.Context, req dto.UserUpdateRequest, userId string) (dto.UserUpdateResponse, error)
 	Delete(ctx context.Context, userId string) error
 }
@@ -27,6 +28,28 @@ func NewUserService(
 		userRepository: userRepo,
 		db:             db,
 	}
+}
+
+func (s *userService) GetAllUsers(ctx context.Context) ([]dto.UserResponse, error) {
+	users, err := s.userRepository.GetAllUsers(ctx, s.db)
+	if err != nil {
+		return nil, err
+	}
+
+	var responses []dto.UserResponse
+	for _, user := range users {
+		responses = append(responses, dto.UserResponse{
+			ID:         user.ID.String(),
+			Name:       user.Name,
+			Email:      user.Email,
+			TelpNumber: user.TelpNumber,
+			Role:       user.Role,
+			ImageUrl:   user.ImageUrl,
+			IsVerified: user.IsVerified,
+		})
+	}
+
+	return responses, nil
 }
 
 func (s *userService) GetUserById(ctx context.Context, userId string) (dto.UserResponse, error) {

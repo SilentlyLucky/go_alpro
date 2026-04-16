@@ -21,6 +21,8 @@ type (
 		GetAllUser(ctx *gin.Context)
 		Update(ctx *gin.Context)
 		Delete(ctx *gin.Context)
+		GetUserById(ctx *gin.Context)
+		GetAllUsers(ctx *gin.Context)
 	}
 
 	userController struct {
@@ -70,6 +72,32 @@ func (c *userController) Me(ctx *gin.Context) {
 
 	res := utils.BuildResponseSuccess(dto.MESSAGE_SUCCESS_GET_USER, result)
 	ctx.JSON(http.StatusOK, res)
+}
+
+func (ctrl *userController) GetUserById(c *gin.Context) {
+	userId := c.Param("id")
+
+	ctx := c.Request.Context()
+
+	user, err := ctrl.userService.GetUserById(ctx, userId)
+	if err != nil {
+		c.JSON(http.StatusNotFound, gin.H{"error": "User tidak ditemukan", "message": err.Error()})
+		return
+	}
+
+	c.JSON(http.StatusOK, gin.H{"message": "Berhasil mengambil data", "data": user})
+}
+
+func (ctrl *userController) GetAllUsers(c *gin.Context) {
+	ctx := c.Request.Context()
+
+	users, err := ctrl.userService.GetAllUsers(ctx)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "Gagal mengambil data user", "message": err.Error()})
+		return
+	}
+
+	c.JSON(http.StatusOK, gin.H{"message": "Berhasil mengambil semua data", "data": users})
 }
 
 func (c *userController) Update(ctx *gin.Context) {

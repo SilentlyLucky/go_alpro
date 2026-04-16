@@ -26,8 +26,15 @@ func RegisterDependencies(injector *do.Injector) {
 		return authService.NewJWTService(), nil
 	})
 
-	db := do.MustInvokeNamed[*gorm.DB](injector, constants.DB)
-	jwtService := do.MustInvokeNamed[authService.JWTService](injector, constants.JWTService)
+	db, errDB := do.InvokeNamed[*gorm.DB](injector, constants.DB)
+	if errDB != nil {
+		panic("GAGAL LOAD DATABASE: " + errDB.Error())
+	}
+
+	jwtService, errJWT := do.InvokeNamed[authService.JWTService](injector, constants.JWTService)
+	if errJWT != nil {
+		panic("GAGAL LOAD JWT: " + errJWT.Error())
+	}
 
 	userRepository := repository.NewUserRepository(db)
 	refreshTokenRepository := authRepo.NewRefreshTokenRepository(db)

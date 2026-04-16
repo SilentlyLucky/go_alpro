@@ -15,6 +15,7 @@ type (
 		CheckEmail(ctx context.Context, tx *gorm.DB, email string) (entities.User, bool, error)
 		Update(ctx context.Context, tx *gorm.DB, user entities.User) (entities.User, error)
 		Delete(ctx context.Context, tx *gorm.DB, userId string) error
+		GetAllUsers(ctx context.Context, tx *gorm.DB) ([]entities.User, error)
 	}
 
 	userRepository struct {
@@ -51,6 +52,14 @@ func (r *userRepository) GetUserById(ctx context.Context, tx *gorm.DB, userId st
 	}
 
 	return user, nil
+}
+func (r *userRepository) GetAllUsers(ctx context.Context, tx *gorm.DB) ([]entities.User, error) {
+	var users []entities.User
+	err := tx.WithContext(ctx).Find(&users).Error
+	if err != nil {
+		return nil, err
+	}
+	return users, nil
 }
 
 func (r *userRepository) GetUserByEmail(ctx context.Context, tx *gorm.DB, email string) (entities.User, error) {
