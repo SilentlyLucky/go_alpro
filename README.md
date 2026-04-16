@@ -1063,77 +1063,12 @@ func RegisterUserRoutes(r *gin.RouterGroup, ctrl *controller.UserController) {
 
 > Ambil satu user berdasarkan ID. Kembalikan `404` jika tidak ditemukan.
 
-Tambahkan di `repository`:
-```go
-func (r *UserRepository) FindByID(id uint) (*entities.User, error) {
-    var user entities.User
-    err := r.db.First(&user, id).Error
-    return &user, err
-}
-```
-
-Tambahkan di `service`:
-```go
-func (s *UserService) GetUserByID(id uint) (*entities.User, error) {
-    return s.repo.FindByID(id)
-}
-```
-
-Tambahkan di `controller`:
-```go
-func (ctrl *UserController) GetUserByID(c *gin.Context) {
-    id, err := strconv.Atoi(c.Param("id"))
-    if err != nil {
-        utils.ErrorResponse(c, http.StatusBadRequest, "ID tidak valid")
-        return
-    }
-
-    user, err := ctrl.service.GetUserByID(uint(id))
-    if err != nil {
-        utils.ErrorResponse(c, http.StatusNotFound, "User tidak ditemukan")
-        return
-    }
-
-    utils.SuccessResponse(c, http.StatusOK, "OK", user)
-}
-```
-
-> [!NOTE]
-> - `strconv.Atoi(...)` -- Mengonversi **string ke integer** (Atoi = "ASCII to Integer"). Karena URL parameter selalu berupa string, kita perlu mengonversinya ke angka.
-> - `c.Param("id")` -- Mengambil nilai URL parameter `:id` dari request. Misalnya jika URL-nya `/users/5`, maka `c.Param("id")` mengembalikan `"5"` (string).
-> - `uint(id)` -- Mengonversi `int` ke `uint` (unsigned integer), karena fungsi `FindByID` meminta parameter bertipe `uint`.
-> - `http.StatusNotFound` = kode 404 (data tidak ditemukan).
-
 ### Challenge B -- `GET /users`
 
 > Ambil semua user. Kembalikan array JSON.
 
-```go
-// repository
-func (r *UserRepository) FindAll() ([]entities.User, error) {
-    var users []entities.User
-    err := r.db.Find(&users).Error
-    return users, err
-}
-
-// service
-func (s *UserService) GetAllUsers() ([]entities.User, error) {
-    return s.repo.FindAll()
-}
-
-// controller
-func (ctrl *UserController) GetAllUsers(c *gin.Context) {
-    users, err := ctrl.service.GetAllUsers()
-    if err != nil {
-        utils.ErrorResponse(c, http.StatusInternalServerError, "Gagal mengambil data")
-        return
-    }
-    utils.SuccessResponse(c, http.StatusOK, "OK", users)
-}
-```
-
 > [!WARNING]
-> **Tips debugging:** Error paling umum di Go adalah lupa menangani `if err != nil`. Kalau ada `panic`, cari baris yang tidak menangani error return-nya. Gunakan `log.Println(err)` untuk print error ke terminal.
+> **Tips debugging:** Error paling umum di Go adalah lupa menangani `if err != nil`. Kalau ada `panic`, cari baris yang tidak menangani error return-nya. Gunakan `fmt.Println(err)` untuk print error ke terminal.
 
 ---
 
