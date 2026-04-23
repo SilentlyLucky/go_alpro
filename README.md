@@ -529,7 +529,7 @@ Untuk memenuhi Challenge A dan B, perubahan yang ditambahkan adalah:
 9. Controller `GetUsers` -- response array JSON `200`/`500`.
 10. Helper `mapUserResponse` -- memetakan entity ke DTO agar password tidak bocor.
 
-## 6. Bukto Screenshot
+## 6. Bukti Screenshot
 
 ### 1. Post new user
 
