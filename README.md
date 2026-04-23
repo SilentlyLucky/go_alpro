@@ -529,3 +529,26 @@ Untuk memenuhi Challenge A dan B, perubahan yang ditambahkan adalah:
 9. Controller `GetUsers` -- response array JSON `200`/`500`.
 10. Helper `mapUserResponse` -- memetakan entity ke DTO agar password tidak bocor.
 
+## 6. Bukto Screenshot
+
+### 1. Post new user
+
+![](https://github.com/SilentlyLucky/go_alpro/blob/6b1e585a6569cb10ce33458608aaa3ed6dbde745/images/Post_1.png)
+
+![](https://github.com/SilentlyLucky/go_alpro/blob/6b1e585a6569cb10ce33458608aaa3ed6dbde745/images/Post_2.png)
+
+### 2. Dapetin token
+
+![](https://github.com/SilentlyLucky/go_alpro/blob/6b1e585a6569cb10ce33458608aaa3ed6dbde745/images/Token_2.png)
+
+### 3. GET /users/:id
+
+![](https://github.com/SilentlyLucky/go_alpro/blob/6b1e585a6569cb10ce33458608aaa3ed6dbde745/images/Get%20user%20by%20id.png)
+
+![](https://github.com/SilentlyLucky/go_alpro/blob/6b1e585a6569cb10ce33458608aaa3ed6dbde745/images/Get%20user%20by%20id%202.png)
+
+![](https://github.com/SilentlyLucky/go_alpro/blob/6b1e585a6569cb10ce33458608aaa3ed6dbde745/images/Get%20user%20by%20id%20not%20found.png)
+
+### 4. GET /users
+
+![](https://github.com/SilentlyLucky/go_alpro/blob/6b1e585a6569cb10ce33458608aaa3ed6dbde745/images/Get%20users.png)
